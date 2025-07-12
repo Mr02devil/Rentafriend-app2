@@ -31,7 +31,10 @@ jobs:
         run: npm install
 
       - name: Build APK
+- name: Install Android SDK Build Tools
         run: |
+          yes | sudo ${ANDROID_SDK_ROOT}/cmdline-tools/latest/bin/sdkmanager --licenses
+          sdkmanager "platform-tools" "platforms;android-33" "build-tools;33.0.2"        run: |
           cordova platform add android
           cordova build android --release
 
