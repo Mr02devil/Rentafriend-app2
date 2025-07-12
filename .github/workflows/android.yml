@@ -30,11 +30,14 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Build APK
-- name: Install Android SDK Build Tools
+      - name: Install Android SDK Build Tools
         run: |
-          yes | sudo ${ANDROID_SDK_ROOT}/cmdline-tools/latest/bin/sdkmanager --licenses
-          sdkmanager "platform-tools" "platforms;android-33" "build-tools;33.0.2"        run: |
+          mkdir -p ${ANDROID_SDK_ROOT}/cmdline-tools/latest
+          cp -r ${ANDROID_SDK_ROOT}/cmdline-tools/* ${ANDROID_SDK_ROOT}/cmdline-tools/latest/
+          echo "y" | ${ANDROID_SDK_ROOT}/cmdline-tools/latest/bin/sdkmanager --sdk_root=${ANDROID_SDK_ROOT} "platform-tools" "platforms;android-33" "build-tools;33.0.2"
+
+      - name: Build APK
+        run: |
           cordova platform add android
           cordova build android --release
 
@@ -43,4 +46,3 @@ jobs:
         with:
           name: RentAFriend-APK
           path: platforms/android/app/build/outputs/apk/release/*.apk
-
